@@ -1,0 +1,61 @@
+<odoo>
+  <data>
+    <record id="id_product_category_view_form_inherit" model="ir.ui.view">
+        <field name="name">product category view form inherit</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+          <xpath expr="//group" position="inside">
+            <field name="designer_share"/>
+            <field name="i_s_share"/>
+          </xpath>
+        </field>
+    </record>
+      
+              <record id="designer_share_view_form" model="ir.ui.view">
+            <field name="name">designer.share.view</field>
+            <field name="model">designer.share</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                            </group>
+                            <group>
+                                <field name="date_to"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Export Xlsx" name="export_product" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+      <record id="designer_share_view_action" model="ir.actions.act_window">
+            <field name="name">OTIF Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">designer.share</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+            </field>
+        </record>
+      <menuitem id="designer_share_view_action_menu" name="Designer share"
+                  parent="point_of_sale.menu_point_rep" action="designer_share_view_action"/>
+
+      <report id="report_action_id_designer_share"
+                model="designer.share"
+                string="designer share"
+                report_type="xlsx"
+                name="report_sales_can.designer_share"
+                file="report_sales_can.designer_share"
+                attachment_use="False"/>
+
+  </data>
+</odoo>
