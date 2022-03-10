@@ -1,0 +1,94 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="vendor_offer.list">
+            <field name="name">vendor_offer list</field>
+            <field name="model">vendor_offer.vendor_offer</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                </tree>
+            </field>
+        </record>
+        <record id="id_vendor_offer_vendor_offer_form" model="ir.ui.view">
+            <field name="name">vendor_offer vendor_offer</field>
+            <field name="model">vendor_offer.vendor_offer</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="date"/>
+                            </group>
+                            <group>
+                                <field name="offer_valid_from"/>
+                                <field name="offer_valid_to"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Discount Table">
+                                <field name="line_ids">
+                                    <tree editable="bottom">
+                                        <field name="categ_id"/>
+                                        <field name="product_id"/>
+                                        <field name="qty"/>
+                                        <field name="price_unit"/>
+                                        <field name="total_amount"/>
+                                        <field name="target_details"/>
+                                        <field name="offer_details"/>
+                                        <field name="discount"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="id_vendor_offer_vendor_offer_act" model="ir.actions.act_window">
+            <field name="name">Vendor Offer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vendor_offer.vendor_offer</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+        <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+        <menuitem id="id_vendor_offer_vendor_offer_menuitemroot" name="Vendor Offer" sequence="8" parent="purchase.menu_purchase_config"/>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="id_vendor_offer_vendor_offer_menuitem" name="Vendor Offer"
+                  parent="id_vendor_offer_vendor_offer_menuitemroot" action="id_vendor_offer_vendor_offer_act"
+                  sequence="1"/>
+
+        <record id="id_supplier_info_form_inherit" model="ir.ui.view">
+        <field name="name">product.supplierinfo.requisition.view</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="priority">20</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[2]" position="after">
+                <field name="direct_discount"/>
+                <field name="cost_unite"/>
+                <field name="indirect_monthly"/>
+                <field name="cost_indirect_monthly"/>
+                <field name="indirect_quarter"/>
+                <field name="cost_indirect_quarter"/>
+                <field name="indirect_semi_annual"/>
+                <field name="cost_indirect_semi_annual"/>
+                <field name="indirect_annual"/>
+                <field name="net_cost"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    </data>
+</odoo>

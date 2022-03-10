@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record id="group_restrict_product" model="res.groups">
+            <field name="name">Restrict Products</field>
+        </record>
+
+        <record id="filter_user_product_allowed" model="ir.rule">
+            <field name="name">Filter Product Allowed</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="groups" eval="[(4, ref('group_restrict_product'))]"/>
+            <field name="domain_force">[('id','in', [ p.id for p in user.user_product_ids ])]</field>
+
+        </record>
+       
+    </data>
+</odoo>

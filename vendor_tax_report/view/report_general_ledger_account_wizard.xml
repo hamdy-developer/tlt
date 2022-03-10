@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <data>
+        <record id="vendor_tax_report_view_form" model="ir.ui.view">
+            <field name="name">vendor.tax.report.view</field>
+            <field name="model">vendor.tax.report</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                            </group>
+                            <group>
+                            <field name="date_to"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Export Xlsx" name="export_product" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="vendor_tax_report_view_action" model="ir.actions.act_window">
+            <field name="name">Vendor Tax Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vendor.tax.report</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="vendor_tax_report_view_menu" name="Vendor Tax Report"
+                 action="vendor_tax_report_view_action"  parent="account_reports.account_reports_audit_reports_menu"  sequence="11"/>
+
+
+
+        # record for exist report xlsx
+        <report id="vendor_tax_report"
+          model="vendor.tax.report"
+          string="Custom XLS Report"
+          report_type="xlsx"
+          name="vendor.tax.report.vendor_tax_report_temp"
+          file="vendor.tax.report.vendor_tax_report_temp"
+        />
+    </data>
+</odoo>

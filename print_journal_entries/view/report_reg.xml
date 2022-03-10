@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<openerp-->
+<odoo>   <!-- #odoo13 -->
+    <data>
+        
+        <!-- QWeb Reports for Journal Entries -->
+        <!-- odoo13 <report
+            id="print_journal_entires_report"
+            model="account.move"
+            menu="True"
+            report_type="qweb-pdf"
+            string="Journal Entires"
+            name="print_journal_entries.project_journal_entries_id"
+            file="print_journal_entries.project_journal_entries_id"
+         />-->
+
+        <record id="print_journal_entires_report" model="ir.actions.report">
+            <field name="name">Journal Entires</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">print_journal_entries.project_journal_entries_id</field>
+            <field name="report_file">print_journal_entries.project_journal_entries_id</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+        
+    </data>
+<!--</openerp-->
+</odoo>   <!-- #odoo13 -->

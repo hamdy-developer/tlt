@@ -1,0 +1,102 @@
+<odoo>
+    <data>
+        <record id="id_account_view_move_line_tree" model="ir.ui.view">
+            <field name="inherit_id" ref="account.view_move_line_tree"/>
+            <field name="name">account.consolidation.move.line.tree</field>
+            <field name="model">account.move.line</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='account_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='account_id']" position="after">
+                    <field name="acoucnt_code"/>
+                    <field name="acoucnt_name"/>
+                </xpath>
+                <xpath expr="//field[@name='analytic_account_id']" position="attributes">
+                    <attribute name="string">Profit Center</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="account.action_account_payments" model="ir.actions.act_window">
+            <field name="name">colocations</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_mode">tree,kanban,form,graph</field>
+            <field name="context">{
+                'default_payment_type': 'outbound',
+                'default_partner_type': 'supplier',
+                'search_default_outbound_filter': 1,
+                'default_move_journal_types': ('bank', 'cash'),
+                }
+            </field>
+            <field name="view_id" ref="account.view_account_supplier_payment_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Register a payment
+                </p>
+                <p>
+                    Payments are used to register liquidity movements. You can process those payments by your own means
+                    or by using installed facilities.
+                </p>
+            </field>
+        </record>
+        <menuitem id="account.menu_action_account_payments_receivable" action="account.action_account_payments"
+                  sequence="15" name="colocations" parent="account.menu_finance_receivables"/>
+
+        <record id="view_account_payment_form_inherit_payment" model="ir.ui.view">
+            <field name="name">view.account.payment.form.inherit.payment</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_type']" position="attributes">
+                    <attribute name="string">colocation Type</attribute>
+                </xpath>
+                <xpath expr="//field[@name='payment_method_id']" position="attributes">
+                    <attribute name="string">colocation Method</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="id_invoice_line_be_intrastat_data_form" model="ir.ui.view">
+            <field name="name">account.move.form.inherit.account.be.intrastat</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='analytic_account_id']" position="attributes">
+                    <attribute name="string">Profit Center</attribute>
+                </xpath>
+                <xpath expr="//field[@name='analytic_tag_ids']" position="attributes">
+                    <attribute name="string">Cost Center</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="invoice_form_inherit_l10n_in" model="ir.ui.view">
+            <field name="name">account.move.form.inherit.l10n.in</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='analytic_account_id']" position="attributes">
+                    <attribute name="string">Profit Center</attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='analytic_tag_ids']" position="attributes">
+                    <attribute name="string">Cost Center</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="id_view_form_account_move_line">
+            <field name="name">view.form.account.move.line</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_move_line_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='analytic_account_id']" position="attributes">
+                        <attribute name="string">Profit Center</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='analytic_tag_ids']" position="attributes">
+                        <attribute name="string">Cost Center</attribute>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

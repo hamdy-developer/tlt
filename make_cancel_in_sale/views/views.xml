@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="make_cancel_reason_popup_form" model="ir.ui.view">
+            <field name="name">cancel.reason.popup.form</field>
+            <field name="model">cancel.reason.popup</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="cancel_reason_id"/>
+                            <field name="sale_id" invisible="1"/>
+                        </group>
+
+                    </sheet>
+                    <footer>
+                        <button string="Make Cancel" name="make_cancel" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+        <record id="make_cancel_reason_form" model="ir.ui.view">
+            <field name="name">cancel.reason.form</field>
+            <field name="model">cancel.reason</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+
+                    </sheet>
+<!--                    <footer>-->
+<!--                        <button string="Make Cancel" name="make_cancel" type="object" class="btn-primary"/>-->
+<!--                        <button string="Cancel" class="btn-secondary" special="cancel"/>-->
+<!--                    </footer>-->
+
+                </form>
+            </field>
+        </record>
+        <!--      #-->
+        <record id="make_cancel_reason_tree" model="ir.ui.view">
+            <field name="name">cancel.reason.tree</field>
+            <field name="model">cancel.reason</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <!--      ######################-->
+        <record id="make_cancel_reason_search" model="ir.ui.view">
+            <field name="name">cancel.reason.search</field>
+            <field name="model">cancel.reason</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+        <!--      ##############################-->
+        <record id="make_cancel_reason_action" model="ir.actions.act_window">
+            <field name="name">cancel.reason.action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cancel.reason</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+        <!--      ############################-->
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="make_cancel_reason_menu" name="Return Reason" parent="sale.menu_sale_config"
+                  action="make_cancel_reason_action"/>
+        <menuitem id="make_cancel_reason_menu" name="Return Reason" parent="sale.menu_sale_config"
+                  action="make_cancel_reason_action"/>
+
+
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="sale_order_cancel_id" model="ir.ui.view">
+            <field name="name">sale.order.cancel</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <!-- Add your fields or attributes here -->
+                    <button name="action_cancel_button" type="object" string="Cancel" attrs="{'invisible': ['|', ('state', 'not in', ['draft', 'sent','sale']), ('id', '=', False)]}"/>
+
+                </xpath>
+                <xpath expr="//field[@name='date_order'][1]" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="cancel_reason_id" attrs="{'invisible': [('state','!=', 'cancel')]}"/>
+
+                </xpath>
+
+                <xpath expr="//button[@name='action_cancel']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="id_stock_picking_form_view" model="ir.ui.view">
+        <field name="name">stock.picking.form.view</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='move_ids_without_package']/tree" position="inside" >
+                <field name="cancel_reason_id" optional="hide"/>
+            </xpath>
+        </field>
+        </record>
+        <record id="id_view_stock_return_picking_form_inherit_stock_account" model="ir.ui.view">
+            <field name="name">stock.return.picking.stock.account.form</field>
+            <field name="inherit_id" ref="stock.view_stock_return_picking_form"/>
+            <field name="model">stock.return.picking</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_return_moves']/tree" position="inside">
+                    <field name="cancel_reason_id" required="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="return_report_wizard_view_form" model="ir.ui.view">
+            <field name="name">return.report</field>
+            <field name="model">return.report</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                            </group>
+                            <group>
+                            <field name="date_to"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Export Xlsx" name="export_product" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="id_return_report_act" model="ir.actions.act_window">
+            <field name="name">return report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">return.report</field>
+            <field name="target">new</field>
+            <field name="view_mode">form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+              </p><p>
+                <!-- More details about what a user can do with this object will be OK -->
+              </p>
+            </field>
+        </record>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="id_return_report_menu" name="Return Report" parent="stock.menu_warehouse_report" action="id_return_report_act" sequence="5"/>
+
+        <report id="report_action_id_return_report_wizard"
+          model="return.report"
+          string="Return Report"
+          report_type="xlsx"
+          name="make_cancel_in_sale.return_report_tem"
+          file="make_cancel_in_sale.return_report_tem"
+          attachment_use="False"/>
+
+
+    </data>
+</odoo>

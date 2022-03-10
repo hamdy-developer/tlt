@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="add_po_button_sale_order_form_view" model="ir.ui.view">
+            <field name="name">add.po.button.sale.order.form.view</field>
+            <field name="model">sale.order</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='oe_button_box']" position="inside">
+                 	<button type="object" name="action_view_purchase_order" string="Purcahse Order" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible':[('purchase_order_ids','=',[])]}">
+                         <field name="purchase_order_ids" invisible="1"/>
+                    </button>
+                </xpath>
+            </field>
+    </record>
+</odoo>

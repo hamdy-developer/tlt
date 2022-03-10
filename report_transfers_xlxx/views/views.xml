@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report id="id_report_transfers_xlxx"
+          model="stock.picking"
+          string="Area picking"
+          report_type="xlsx"
+          name="report_transfers_xlxx.report_transfers_xlxx"
+          file="report_transfers_xlxx.report_transfers_xlxx"
+          attachment_use="False"/>
+    </data>
+</odoo>

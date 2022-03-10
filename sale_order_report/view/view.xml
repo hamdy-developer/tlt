@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_bata_1" model="report.paperformat">
+            <field name="name">gamal</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">270</field>
+            <field name="page_width">80</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">7</field>
+            <field name="margin_bottom">7</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+        <!-- QWeb Reports -->
+        <!-- NAME & FILE_NAME should be the same -->
+        <report
+                id="id_sale_order_receipt"
+                model="sale.order"
+                report_type="qweb-pdf"
+                string="Receipt"
+                name="sale_order_report.sale_order_receipt"
+                file="sale_order_report.sale_order_receipt"
+        />
+
+        <record id="sale_order_report.id_sale_order_receipt" model="ir.actions.report">
+            <field name="paperformat_id" ref="sale_order_report.paperformat_bata_1"/>
+        </record>
+
+
+        <!--        <record id="pos_exchange_id" model="ir.actions.report">-->
+        <!--            <field name="name">pos exchange</field>-->
+        <!--            <field name="model">pos.order</field>-->
+        <!--            <field name="report_type">qweb-pdf</field>-->
+        <!--            <field name="report_name">pos_exchange.pos_exchange_id_template</field>-->
+        <!--            <field name="report_file">pos_exchange.pos_exchange_id_template</field>-->
+        <!--            <field name="print_report_name">'Exchange'</field>-->
+        <!--            <field name="paperformat_id" ref="pos_exchange.paperformat_bata_1"/>-->
+        <!--            <field name="binding_type">report</field>-->
+        <!--            <field name="binding_model_id" ref="point_of_sale.model_pos_order"/>-->
+        <!--        </record>-->
+        <template id="sale_order_receipt">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <div class="page" style="font-size: 10px">
+                            <center>
+
+                                <t t-if="o.company_id.logo">
+                                    <img style="max-height: 80px;"
+                                         t-att-src="'data:image/png;base64,%s' % to_text(o.company_id.logo)"
+                                         t-if="o.company_id.logo"/>
+                                    <h5>
+                                        <b>
+                                            <span t-field="o.name"/>
+                                        </b>
+                                    </h5>
+                                </t>
+                            </center>
+                            <p class="text-right"><span t-field="o.date_order"/>  التاريخ</p>
+                            <table width="100%">
+                                <tr>
+                                    <td><span t-field="o.user_id.name"/>مسؤل المبيعات</td>
+                                    <td><span t-field="o.partner_id.name"/>أسم العميل</td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <t t-set="total_all" t-value="0" />
+                            <table width="100%">
+                                <tr>
+                                    <td class="text-center">الاجمالي</td>
+                                    <td class="text-center">السعر</td>
+                                    <td class="text-center">الكمبة</td>
+                                    <td class="text-center">الصنف</td>
+                                </tr>
+                                <t t-foreach="o.order_line" t-as="line" >
+                                    <tr t-if="line.qty_delivered" >
+                                        <t t-set="total" t-value="line.price_unit*line.qty_delivered"/>
+                                        <td class="text-center"><t t-esc="total"/></td>
+                                        <td class="text-center"><span t-field="line.price_unit"/></td>
+                                        <td class="text-center"><span t-field="line.qty_delivered"/></td>
+                                        <td class="text-center"><span t-field="line.product_id.name"/></td>
+                                        <t t-set="total_all" t-value="total_all + total" />
+                                    </tr>
+                                    <tr t-if="line.price_unit &lt; 0" >
+                                        <td class="text-center"><span t-field="line.price_subtotal"/></td>
+                                        <td class="text-center"><span t-field="line.price_unit"/></td>
+                                        <td class="text-center"><span t-field="line.product_uom_qty"/></td>
+                                        <td class="text-center"><span t-field="line.product_id.name"/></td>
+                                        <t t-set="total_all" t-value="total_all + line.price_subtotal" />
+                                    </tr>
+
+                                </t>
+                            </table>
+                            <br/>
+                            <br/>
+                            <table width="100%">
+                                <tr>
+                                    <td width="40%"></td>
+                                    <td><t t-esc="total_all"/></td>
+                                    <td class="text-right">الاجمالي قبل الضريبه</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><span t-field="o.amount_tax"/></td>
+                                    <td class="text-right">الضريبه</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><t t-esc="total_all"/></td>
+                                    <td class="text-right">الاجمالي</td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <table width="100%">
+                                <tr>
+                                    <td width="25%"></td>
+                                    <td><span t-field="o.company_id.company_registry"/></td>
+                                    <td class="text-right">السجل الاتجاري</td>
+                                    <td width="25%"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><span t-field="o.company_id.vat"/></td>
+                                    <td class="text-right">البطاقه الضريبيه</td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="id_sale_order_inherit_form_view" model="ir.ui.view">
+            <field name="name">sale order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button" position="after">
+                    <button name="print_receipt" type="object" string="Receipt"/>
+               </xpath>
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <data>
+        <record id="general_ledger_wizard_view_form" model="ir.ui.view">
+            <field name="name">general.ledger.wizard.view</field>
+            <field name="model">general.ledger.wizard</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                            </group>
+                            <group>
+                                <field name="date_to"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Export Xlsx" name="export_product" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="sales_lunch_date_view_form" model="ir.ui.view">
+            <field name="name">sales.lunch.date.wizard.view</field>
+            <field name="model">sales.lunch.date</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <center>
+                            <field name="is_xlsx" invisible="1"/>
+                            <group>
+                                <group>
+                                    <field name="date_from" attrs="{'invisible': [('is_xlsx', '!=',True)]}"/>
+                                </group>
+                                <group>
+                                    <field name="date_to" attrs="{'invisible': [('is_xlsx', '!=',True)]}"/>
+                                </group>
+                            </group>
+                            <h3 attrs="{'invisible': [('is_xlsx', '=',True)]}">sales lunch to date</h3>
+                            <button attrs="{'invisible': [('is_xlsx', '=',True)]}" string="Print" name="export_product"
+                                    type="object" class="btn-primary"/>
+                        </center>
+                    </sheet>
+                    <footer>
+                        <button attrs="{'invisible': [('is_xlsx', '!=',True)]}" string="Export Xlsx" name="export_product_Xlsx" type="object" class="btn-primary"/>
+                        <button attrs="{'invisible': [('is_xlsx', '!=',True)]}" string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="general_ledger_wizard_view_action" model="ir.actions.act_window">
+            <field name="name">OTIF Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">general.ledger.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+            </field>
+        </record>
+        <record id="sales_lunch_date_view_action" model="ir.actions.act_window">
+            <field name="name">sales lunch to date</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sales.lunch.date</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+            </field>
+        </record>
+        <record id="sales_lunch_date_view_action_xlsx" model="ir.actions.act_window">
+            <field name="name">sales lunch to date</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sales.lunch.date</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{
+                'default_is_xlsx': 1
+                }
+            </field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="general_ledger_wizard_view_menu" name="OTIF Report"
+                  parent="stock.menu_warehouse_report" action="general_ledger_wizard_view_action"/>
+        <menuitem id="sales_lunch_date_view_action_menu" name="Sales lunch to date"
+                  parent="sale.menu_sale_report" action="sales_lunch_date_view_action"/>
+        <menuitem id="sales_lunch_date_view_action_xlsx_menu" name="Daily transcation"
+                  parent="sale.menu_sale_report" action="sales_lunch_date_view_action_xlsx"/>
+
+
+        # record for exist report xlsx
+        <report id="report_action_id_sales_lunch_date"
+                model="sales.lunch.date"
+                string="Sales lunch to date"
+                report_type="qweb-pdf"
+                name="otif.sales_lunch_date_tem"
+                file="otif.sales_lunch_date_tem"
+                attachment_use="False"/>
+
+        <report id="report_action_id_general_ledger_wizard"
+                model="general.ledger.wizard"
+                string="Custom XLS Report"
+                report_type="xlsx"
+                name="otif.general_ledger_account"
+                file="otif.general_ledger_account"
+                attachment_use="False"/>
+        <report id="report_action_id_sales_lunch_date_xlsx"
+                model="sales.lunch.date"
+                string="Custom XLS Report"
+                report_type="xlsx"
+                name="otif.tem_id_sales_lunch_date_xlsx"
+                file="otif.tem_id_sales_lunch_date_xlsx"
+                attachment_use="False"/>
+
+        <template id="sales_lunch_date_tem">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <table class="table table-bordered" width="100%">
+                                <tr>
+                                    <th width="50%">
+                                        Activated Merchants
+                                    </th>
+                                    <th width="50%" class="text-center">
+                                        <span t-field="o.activated_merchants"/>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th width="50%">
+                                        Merchants made 1 order
+                                    </th>
+                                    <th width="50%" class="text-center">
+                                        <span t-field="o.merchants_1_order"/>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th width="50%">
+                                        Merchants made 2 order or more
+                                    </th>
+                                    <th width="50%" class="text-center">
+                                        <span t-field="o.merchants_2_order"/>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th width="50%">
+                                        Total orders value
+                                    </th>
+                                    <th width="50%" class="text-center">
+                                        <span t-field="o.total_order_value"/>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th width="50%">
+                                        Total number of order
+                                    </th>
+                                    <th width="50%" class="text-center">
+                                        <span t-field="o.total_number_order"/>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th width="50%">
+                                        AVG value order
+                                    </th>
+                                    <th width="50%" class="text-center">
+                                        <span t-field="o.avg_order"/>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th width="50%">
+                                        Number of skus sold
+                                    </th>
+                                    <th width="50%" class="text-center">
+                                        <span t-field="o.number_skus"/>
+                                    </th>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

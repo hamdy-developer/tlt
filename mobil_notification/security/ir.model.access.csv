@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mobil_notification_mobil_notification,mobil_notification.mobil_notification,model_mobil_notification_mobil_notification,base.group_user,1,1,1,1

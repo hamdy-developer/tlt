@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="id_base_view_partner_form_in" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="area_id"/>
+                <field name="customer_type_id"/>
+                <field name="employee_id" groups="base.group_system"/>
+                <field name="governorate_id"/>
+                <field name="shop_name"/>
+                <field name="password"/>
+                <field name="token" invisible="1"/>
+                <field name="otp" invisible="1"/>
+                <field name="x"/>
+                <field name="y"/>
+                <field name="viitas"/>
+                <field name="viitas_action"/>
+                <field name="area_id"/>
+                <field name="sale_order_count"/>
+                <field name="sales_order_amount"/>
+                <field name="avr_sales"/>
+                <field name="device_id"/>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="custom_target"/>
+                <field name="customer_invoice"/>
+            </xpath>
+            <page name="sales_purchases" position="after">
+                <page string=" Rate">
+                    <field name="rate_ids" readonly="1">
+                        <tree editable="top">
+                            <field name="date"/>
+                            <field name="rate_state" widget="priority"/>
+                            <field name="commit"/>
+                            <field name="order_id"/>
+                        </tree>
+                    </field>
+                </page>
+            </page>
+        </field>
+    </record>
+
+    <record id="id_erea_act" model="ir.actions.act_window">
+        <field name="name">area</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">area.area</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+            </p>
+            <p>
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="id_erea_menuitem" name="Areas" action="id_erea_act" sequence="1" parent="sale.menu_sale_config"/>
+    odooact
+    <record id="id_customer_type" model="ir.actions.act_window">
+        <field name="name">acustomer type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">customer.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+            </p>
+            <p>
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="id_customer_type_menuitem" name="customer Type" action="id_customer_type" sequence="1"
+              parent="sale.menu_sale_config"/>
+
+    <record id="product_category_view_form_inherit" model="ir.ui.view">
+        <field name="name">product category view form inherit</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div" position="after">
+                <field name="image_1920" widget="image" class="oe_avatar"
+                       force_save="1"/>
+                <field name="attachment_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="brand_ids" widget="many2many_tags"/>
+                <field name="is_soon"/>
+                <field name="customer_type_ids" widget="many2many_tags"/>
+                <field name="sequence"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="id_view_ae_stock_waehouse_form_ept" model="ir.ui.view">
+        <field name="name">stock.ae.warehouse.form.ept</field>
+        <field name="model">stock.warehouse</field>
+        <field name="inherit_id" ref="stock.view_warehouse"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="stock_id"/>
+                <field name="area_ids" widget="many2many_tags"/>
+                <field name="sale_order_amount" invisible="1"/>
+                <field name="hab_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="id_product_template_only_form_view_inh" model="ir.ui.view">
+        <field name="name">product.template.product.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_po_id']" position="after">
+                <field name="max_qty"/>
+            </xpath>
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="customer_type_ids" widget="many2many_tags"/>
+                <field name="sequence"/>
+                <field name="free_qty"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Price of unit">
+                    <group>
+                        <field name="uom_ids">
+                            <tree editable="top">
+                                <field name="warehouse_id" invisible="1"/>
+                                <field name="uom_id"/>
+                                <field name="price"/>
+                                <field name="max_qty"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+                <page string="Product Related">
+                    <group>
+                        <field name="related_product" widget="many2many_tags"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Discount">
+                    <group>
+                        <group>
+                            <field name="is_discount"/>
+                            <field name="percentage" attrs="{'invisible': [('is_discount', '=', False)]}"/>
+                        </group>
+                        <group>
+                            <field name="date_start"
+                                   attrs="{'required': [('is_discount', '!=', False)],'invisible': [('is_discount', '=', False)]}"/>
+                            <field name="price_discount" attrs="{'invisible': [('is_discount', '=', False)]}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='general_information']/group" position="after">
+
+                <group string="Notes">
+                    <field name="note" nolabel="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="id_view_partner_form_inh" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="is_verified" string="VERIFIED"/>
+                <field name="is_block"/>
+                <field name="verified_date"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="id_product_brand_inventory_product_brand_view" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">product.brand</field>
+        <field name="inherit_id" ref="product_brand_inventory.product_brand_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_count']" position="after">
+                <field name="customer_type_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="id_stock_picking_form_view" model="ir.ui.view">
+        <field name="name">stock.picking.form.view</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="statusbar_visible">draft,confirmed,assigned,picked,done</attribute>
+            </xpath>
+            <xpath expr="//field[@name='backorder_id']" position="after">
+                <field name="sale_id" invisible="1"/>
+                <field name="is_verified" invisible="1"/>
+                <field name="code" attrs="{'invisible': [('sale_id', '=', False)]}"/>
+                <field name="area_id" attrs="{'invisible': [('sale_id', '=', False)]}"/>
+                <field name="driver_id"/>
+            </xpath>
+            <xpath expr="//sheet/div" position="after">
+                <widget name="web_ribbon" title="Verified" attrs="{'invisible': [('is_verified', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//button[@name='button_validate']" position="attributes">
+                <attribute name="attrs">{'invisible': [ ('state', '!=', 'picked')]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_validate'][2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_validate']" position="after">
+                <button name="act_picked" type="object" string="picked" attrs="{'invisible': [ ('state', '!=', 'assigned')]}" class="oe_highlight"/>
+            </xpath>
+
+            <!--            <xpath expr="//button" position="after">-->
+            <!--                <button name="button_validate"-->
+            <!--                        attrs="{'invisible': ['|','|', ('state', 'in', ('waiting','confirmed')), ('show_validate', '=', False),('picking_type_code', '=', 'outgoing')]}"-->
+            <!--                        string="Validate" type="object" class="oe_highlight"/>-->
+            <!--                <button name="button_validate"-->
+            <!--                        attrs="{'invisible': ['|','|', ('state', 'in', ('waiting','confirmed')), ('show_validate', '=', False),('is_verified', '=', False)]}"-->
+            <!--                        string="Validate" type="object" class="oe_highlight"/>-->
+            <!--            </xpath>-->
+            <xpath expr="//field[@name='move_ids_without_package']/tree" position="inside">
+                <field name="all_name_uom"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="id_sale_coupon_program_view_promo_program_form" model="ir.ui.view">
+        <field name="name">coupon.program.form</field>
+        <field name="model">coupon.program</field>
+        <field name="inherit_id" ref="coupon.coupon_program_view_promo_program_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="before">
+                <group>
+                    <group>
+                        <field name="attachment_id"/>
+                    </group>
+                    <group></group>
+                </group>
+            </xpath>
+            <xpath expr="//div" position="after">
+                <field name="image_1920" widget="image" class="oe_avatar"
+                       force_save="1"/>
+                <field name="attachment_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='rule_date_to']" position="after">
+                <field name="limit_promotion"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="acquirer_form_sips" model="ir.ui.view">
+        <field name="name">acquirer.form.sips</field>
+        <field name="model">payment.acquirer</field>
+        <field name="inherit_id" ref="payment.acquirer_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="is_bee"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_qoutations_tree_view" model="ir.ui.view">
+        <field name="name">view.salesorder.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+        	<xpath expr="//field[@name='partner_id']" position="after">
+                <field name="customer_pthone"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="id_tele_sales" model="res.groups">
+        <field name="name">Tele Sales</field>
+    </record>
+    <record id="id_tele_sales_inherit" model="ir.ui.view">
+        <field name="name">Tele Sales</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="groups_id" eval="[(6, 0, [ref('nat_integration.id_tele_sales') ])]" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="sale_order_inherited_form_purchase" model="ir.ui.view">
+        <field name="name">sale.order.inherited.form.purchase</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="customer_pthone"/>
+            </xpath>
+            <xpath expr="//group/group" position="inside">
+                <field name="is_allowed" invisible="1"/>
+                <field name="employee_id" groups="base.group_system"/>
+                <field name="device_id"/>
+                <field name="delivery_date"/>
+                <field name="payment_method_type"/>
+                <field name="bee_code" attrs="{'invisible': [('payment_method_type', '!=', 'بي')]}" readonly="1"/>
+                <field name="is_paid"/>
+                <field name="area_id"/>
+                <field name="lat"/>
+                <field name="long"/>
+                <field name="is_done" invisible="1"/>
+                <button type="object" name="action_location" class="btn-primary" icon="fa-truck" string="Location"/>
+
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='sequence']" position="after">
+                <field name="sequence_sr"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+                <field name="qty_available"/>
+            </xpath>
+            <xpath expr="//field[@name='payment_status']" position="after">
+                <field name="order_count"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="id_res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sale.management</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='connectors_setting_container']" position="after">
+                <h2 class="mt32">Order</h2>
+                <div class="row mt16 o_settings_container" id="connectors_setting_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <div class="content-group">
+                                <div class="mt16" id="nat_nat">
+                                    <span>
+                                        <label for="last_delivery" class="oe_inline"/>
+                                        <field name="last_delivery" class="oe_inline" widget="timesheet_uom"/>
+                                    </span>
+                                    <br/>
+                                    <span>
+                                        <label for="minimum_order" class="oe_inline"/>
+                                        <field name="minimum_order" class="oe_inline"/>
+                                    </span>
+                                    <br/>
+                                    <span>
+                                        <label for="minimum_product" class="oe_inline"/>
+                                        <field name="minimum_product" class="oe_inline"/>
+                                    </span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h2 class="mt32">Version</h2>
+                <div class="row mt16 o_settings_container" id="connectors_setting_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <div class="content-group">
+                                <div class="mt16" id="nat_nat">
+                                    <span>
+                                        <label for="version_number" class="oe_inline"/>
+                                        <field name="version_number" class="oe_inline"/>
+                                    </span>
+                                    <br/>
+                                    <span>
+                                        <label for="version_code" class="oe_inline"/>
+                                        <field name="version_code" class="oe_inline"/>
+                                    </span>
+                                    <br/>
+                                    <span>
+                                        <label for="force_update" class="oe_inline"/>
+                                        <field name="force_update" class="oe_inline"/>
+                                    </span>
+                                    <br/>
+                                    <span>
+                                        <label for="under_maintenance" class="oe_inline"/>
+                                        <field name="under_maintenance" class="oe_inline"/>
+                                    </span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h2 class="mt32">Advertiments</h2>
+                <div class="row mt16 o_settings_container" id="connectors_setting_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <div class="content-group">
+                                <div class="mt16" id="advertiments">
+                                    <span>
+                                        <label for="advertiments" class="oe_inline"/>
+                                        <field name="advertiments" class="oe_inline"/>
+                                    </span>
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h2 class="mt32">OTP</h2>
+                <div class="row mt16 o_settings_container" id="connectors_setting_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <div class="content-group">
+                                <div class="mt16" id="otp_default">
+                                    <span>
+                                        <label for="otp_default" class="oe_inline"/>
+                                        <field name="otp_default" class="oe_inline"/>
+                                    </span>
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="id_promotion_frist_form" model="ir.ui.view">
+        <field name="name">promotion frist</field>
+        <field name="model">promotion.frist</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'image_128'}"
+                           force_save="1"/>
+                    <div class="oe_title">
+                        <label class="oe_edit_only" for="name"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="active" widget="boolean_toggle"/>
+                        <field name="attachment_id" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="id_promotion_frist_act" model="ir.actions.act_window">
+        <field name="name">Advertiments</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">promotion.frist</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+            </p>
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="id_promotion_frist_menu" name="advertisements" parent="sale.product_menu_catalog"
+              action="id_promotion_frist_act" sequence="3"/>
+
+    <record id="id_test_test" model="ir.cron">
+        <field name="name">test_test</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="state">code</field>
+        <field name="code">model.testtest()</field>
+        <field name="active" eval="True"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+    </record>
+
+    <record id="id_account_analytic_account_view_form_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.account.form.inherit</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+        <field eval="18" name="priority"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="area_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="id_device_bolck_form" model="ir.ui.view">
+        <field name="name">device.bolck</field>
+        <field name="model">device.bolck</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="id_device_bolck_act" model="ir.actions.act_window">
+        <field name="name">Device Bolck</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">device.bolck</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            <!-- Add Text Here -->
+          </p><p>
+            <!-- More details about what a user can do with this object will be OK -->
+          </p>
+        </field>
+    </record>
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="UNIQUE_id_device_bolck_act" parent="sale.menu_sale_config" action="id_device_bolck_act" />
+
+
+</odoo>
+

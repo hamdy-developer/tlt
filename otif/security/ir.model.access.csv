@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_car_car,access_car_car,model_car_car,base.group_user,1,1,1,
+access_general_ledger_wizard,access_general_ledger_wizard,model_general_ledger_wizard,base.group_user,1,1,1,1
+access_sales_lunch_date,access_sales_lunch_date,model_sales_lunch_date,base.group_user,1,1,1,1

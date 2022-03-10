@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="id_view_edit_sale_order_form_inh" model="ir.ui.view">
+            <field name="name">view.edit.sale.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='price_subtotal']"
+                           position="after">
+                        <field name="stock" invisible="1"/>
+                        <field name="avr_sales" invisible="1"/>
+                        <field name="coverage" invisible="1"/>
+                        <field name="coverage_a_o" invisible="1"/>
+                    </xpath>
+                    <xpath expr="//field[@name='partner_ref']" position="after">
+                        <field name="discount_all"/>
+                        <field name="tolerance"/>
+                    </xpath>
+                    <xpath expr="//notebook" position="inside">
+                        <page string="Vendor offers">
+                            <group>
+                                <field name="message"/>
+                                <field name="apply_after"/>
+                                <field name="discount"/>
+                            </group>
+                        </page>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <record id="id_view_purchase_requisition_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.requisition.form.inherit</field>
+            <field name="model">purchase.requisition</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page/field[@name='line_ids']/tree/field[@name='price_unit']"
+                       position="after">
+                    <field name="stock" invisible="0"/>
+                    <field name="avr_sales" invisible="0"/>
+                    <field name="coverage" invisible="0"/>
+                    <field name="coverage_a_o" invisible="0"/>
+                </xpath>
+                <xpath expr="/form/sheet/notebook/page/field[@name='line_ids']/tree/field[@name='product_description_variants']"
+                       position="replace">
+                    <field name="vendor_id" invisible="0"/>
+                </xpath>
+                <xpath expr="//field[@name='vendor_id']" position="after">
+                    <field name="warehouse_id"/>
+                </xpath>
+            </field>
+        </record>
+        <!--        <record id="id_base_view_partner_form_inh" model="ir.ui.view">-->
+        <!--            <field name="name">res.partner.form</field>-->
+        <!--            <field name="model">res.partner</field>-->
+        <!--            <field name="inherit_id" ref="base.view_partner_form"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//field[@name='vat']" position="after">-->
+        <!--                    <field name="is_verified"/>-->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
+        <record id="id_view_product_template_custom" model="ir.ui.view">
+            <field name="name">view.product.template.custom</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='seller_ids']" position="after">
+                    <label for="vendor_id"/>
+                    <field name="vendor_id"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="id_res_config_settings_view_form_id" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.sale.management</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='connectors_setting_container']" position="after">
+                    <!--                <h2 class="mt32">Order</h2>-->
+                    <div class="row mt16 o_settings_container" id="connectors_setting_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <span>
+                                            <label for="avr_sales_day" class="oe_inline"/>
+                                            <field name="avr_sales_day" class="oe_inline"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

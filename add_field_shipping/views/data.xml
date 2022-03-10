@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="id_creat_data_department" model="hr.department">
+            <field name="name">Shipping representative</field>
+        </record>
+    </data>
+</odoo>

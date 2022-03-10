@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_area_area,access_area_area,model_area_area,base.group_user,1,1,1,1
+access_product_unit_of_measure,access_product_unit_of_measure,model_product_unit_of_measure,base.group_user,1,1,1,1
+access_governorate_governorate,access_governorate_governorate,model_governorate_governorate,base.group_user,1,1,1,1
+access_customer_type,access_customer_type,model_customer_type,base.group_user,1,1,1,1
+access_promotion_frist,access_promotion_frist,model_promotion_frist,base.group_user,1,1,1,1
+access_otp_partner,access_otp_partner,model_otp_partner,base.group_user,1,1,1,1
+access_rate_almuazae,access_rate_almuazae,model_rate_almuazae,base.group_user,1,1,1,1
+access_device_bolck,access_device_bolck,model_device_bolck,base.group_user,1,1,1,1
+

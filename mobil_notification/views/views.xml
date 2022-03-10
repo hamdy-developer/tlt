@@ -1,0 +1,70 @@
+<odoo>
+    <data>
+        <record id="id_mobil_notification_mobil_notification_tree" model="ir.ui.view">
+            <field name="name">mobil notification</field>
+            <field name="model">mobil_notification.mobil_notification</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="title"/>
+                    <field name="notification"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="id_mobil_notification_frm" model="ir.ui.view">
+            <field name="name">Mobil Notification</field>
+            <field name="model">mobil_notification.mobil_notification</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <header>
+                        <button name="act_send" string="Send" class="oe_highlight" type="object"
+                                attrs="{'invisible': [('pop_up', '=', True)]}"/>
+                    </header>
+                    <sheet>
+                        <field name="image_1920" widget="image" class="oe_avatar"
+                               options="{'preview_image': 'image_128'}"
+                               force_save="1"/>
+                        <div class="oe_title">
+                            <label class="oe_edit_only" for="title"/>
+                            <h1>
+                                <field name="title"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="notification"/>
+                            <field name="product_id" attrs="{'invisible': [('pop_up', '=', True)]}"/>
+                            <field name="brand_id" attrs="{'invisible': [('pop_up', '=', True)]}"/>
+                            <field name="category_id" attrs="{'invisible': [('pop_up', '=', True)]}"/>
+                            <field name="pop_up" widget="boolean_toggle"/>
+                            <field name="attachment_id"/>
+                        </group>
+                        <label for="customer_ids" class="col-lg-4 o_light_label"
+                               attrs="{'invisible': [('pop_up', '=', True)]}"/>
+                        <field name="customer_ids" attrs="{'invisible': [('pop_up', '=', True)]}"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="id_mobil_notification_act" model="ir.actions.act_window">
+            <field name="name">Mobil Notification</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mobil_notification.mobil_notification</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="id_mobil_notification_menuitem" action="id_mobil_notification_act" sequence="10"/>
+    </data>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cancel_reason,cancel_reason,model_cancel_reason,base.group_user,1,1,1,1
+access_cancel_reason_popup,cancel_reason_popup,model_cancel_reason_popup,base.group_user,1,1,1,1
+access_return_report,access_return_report,model_return_report,base.group_user,1,1,1,1
