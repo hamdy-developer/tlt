@@ -9,3 +9,6 @@ class InhStockWarehouse(models.Model):
 
 
 
+
+
+
